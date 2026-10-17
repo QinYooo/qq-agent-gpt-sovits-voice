@@ -57,16 +57,21 @@ def create_server(voice, port: int = 9881) -> HTTPServer:
                 self.respond(400, b'{"error":"invalid text request"}', "application/json")
                 return
             output = ROOT / "outputs" / "qqbot" / f"{uuid4().hex}.wav"
+            code, content_type = 200, 'audio/wav'
             try:
                 voice.synthesize(text, output)
                 if output.stat().st_size > 20 * 1024 * 1024:
                     raise ValueError('Generated WAV exceeds 20 MiB')
-                self.respond(200, output.read_bytes(), "audio/wav")
+                payload = output.read_bytes()
             except Exception:
-                self.respond(500, b'{"error":"speech synthesis failed; see runtime/tts.log"}', "application/json")
+                code, content_type = 500, 'application/json'
+                payload = b'{"error":"speech synthesis failed; see runtime/tts.log"}'
             finally:
                 output.unlink(missing_ok=True)
                 output.with_suffix(".json").unlink(missing_ok=True)
+            # Complete cleanup before the client receives its response. This also
+            # avoids races between a fast client and deletion on another thread.
+            self.respond(code, payload, content_type)
 
         def log_message(self, format: str, *args: object) -> None:
             print(f"TTS HTTP: {format % args}", flush=True)
