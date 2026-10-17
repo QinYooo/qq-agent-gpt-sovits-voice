@@ -1,0 +1,13 @@
+{
+  "name": "qq-agent-gpt-sovits-voice",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local GPT-SoVITS v2Pro voice replies for QQ Agent",
+  "license": "MIT",
+  "engines": { "node": ">=20.3.0" },
+  "scripts": {
+    "test": "node --test tests/voice.test.mjs tests/worker.test.mjs",
+    "check:privacy": "python scripts/check_publication.py"
+  }
+}

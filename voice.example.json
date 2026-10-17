@@ -1,0 +1,16 @@
+{
+  "name": "My v2Pro voice",
+  "repo_dir": "vendor/GPT-SoVITS",
+  "gpt_weights": "models/voice/gpt.ckpt",
+  "sovits_weights": "models/voice/sovits.pth",
+  "reference_audio": "references/default.wav",
+  "reference_text": "请替换为参考音频的准确逐字转写",
+  "reference_language": "all_zh",
+  "text_language": "zh",
+  "seed": 42,
+  "speed": 1.0,
+  "top_k": 15,
+  "top_p": 1.0,
+  "temperature": 1.0,
+  "repetition_penalty": 1.35
+}
