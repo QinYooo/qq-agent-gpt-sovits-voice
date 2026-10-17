@@ -111,6 +111,17 @@ class DownloadTests(unittest.TestCase):
             self.assertEqual(len(backup), 1)
             self.assertEqual(json.loads(backup[0].read_text()), {'existing': True})
 
+    def test_device_switch_preserves_existing_voice_and_creates_backup(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            original = {'device': 'cuda', 'name': 'existing voice', 'reference_text': '已有转写'}
+            (root / 'voice.json').write_text(json.dumps(original), encoding='utf-8')
+            with redirect_stdout(io.StringIO()):
+                download_voice.prepare(self.args(device='cpu'), root, api=SimpleNamespace())
+            actual = json.loads((root / 'voice.json').read_text(encoding='utf-8'))
+            self.assertEqual(actual, {**original, 'device': 'cpu'})
+            self.assertEqual(len(list((root / '.backups').glob('*.json'))), 1)
+
 
 class PluginInstallerTests(unittest.TestCase):
     def fixture(self, root):

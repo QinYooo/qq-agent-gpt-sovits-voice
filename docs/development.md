@@ -30,7 +30,7 @@ setup.bat --assets-only --device cpu --non-interactive
 - `--skip-assets`：只构建环境，未完成可用语音安装；用于开发与 CI。
 - `--assets-only`：复用已装环境，重新下载缺失资源 / 配置角色；不会改变已安装的 PyTorch 构建。
 - `--non-interactive`：禁止文件选择输入；默认角色预设可以直接使用。自定义仓库有多个候选时必须给出明确文件。
-- `--replace-voice`：替换已有 `voice.json` 前备份到 `.backups/`。不带这个参数时保留现有角色配置。
+- `--replace-voice`：替换已有 `voice.json` 前备份到 `.backups/`。不带这个参数时保留现有角色配置，只在设备变化时备份并同步 `device`。
 
 自定义模型的无人值守示例，所有路径均为仓库内路径，需替换为该仓库真实文件名：
 

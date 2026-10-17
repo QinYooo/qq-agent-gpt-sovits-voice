@@ -102,7 +102,7 @@ bash install-plugin.sh "/opt/QQ Agent"
 
 一般已支持的 NVIDIA 显卡优先 CUDA 12.6；检测到需要较新构建的显卡时选择 CUDA 12.8。检测结果不等于完整的硬件兼容认证，安装后还会尝试一次 CUDA 运算。显式要求 CUDA 但不可用时会报错，不会悄悄更换为 CPU。
 
-设备选择会写进新生成的 `voice.json`，独立脚本和插件自动启动都读取它。若已有配置被保留，里面的 `device` 也会保留；切换已有配置的运行设备请把该字段改为 `cpu` 或 `cuda`，或在确认更换角色配置时使用 `--replace-voice`。切换 PyTorch 构建可能触发较大的重新下载。
+设备选择会同步写进 `voice.json`，独立脚本和插件自动启动都读取它。已有配置会保留原角色，只在需要时备份并更新设备字段，无需为切换 CPU / CUDA 手改 JSON。切换 PyTorch 构建可能触发较大的重新下载。
 
 此版本提供 Windows / Linux x86_64 的 NVIDIA / CPU 安装路径；不提供 AMD ROCm、Apple MPS、ARM 或 v2ProPlus 安装预设。
 

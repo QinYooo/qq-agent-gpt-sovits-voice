@@ -105,7 +105,11 @@ def prepare(args, root=ROOT, api=None, download=None, audio_info=None):
     repo, url_revision = parse_model_url(args.model_url)
     configured = root / 'voice.json'
     if configured.exists() and not args.replace_voice:
-        print('保留现有 voice.json 与角色资源；更换角色请显式添加 --replace-voice。')
+        current = json.loads(configured.read_text(encoding='utf-8-sig'))
+        if current.get('device') != args.device:
+            current['device'] = args.device
+            write_config(current, root, replace=True)
+        print(f'保留现有角色配置与资源，运行设备已同步为 {args.device}；更换角色请显式添加 --replace-voice。')
         return
     if api is None:
         from huggingface_hub import HfApi, hf_hub_download
