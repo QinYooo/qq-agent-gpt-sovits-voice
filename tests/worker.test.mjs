@@ -1,7 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
-import { configuredDirectory, LocalWorker } from '../plugins/azuma-voice/worker.js';
+import { configuredDirectory, LocalWorker, pythonPath } from '../plugins/azuma-voice/worker.js';
+import { join } from 'node:path';
+
+test('worker chooses the virtual environment executable for its host OS', () => {
+  assert.equal(pythonPath('project', 'win32'), join('project', '.venv', 'Scripts', 'python.exe'));
+  assert.equal(pythonPath('project', 'linux'), join('project', '.venv', 'bin', 'python'));
+});
 
 test('public defaults require a user-supplied absolute project directory', () => {
   for (const sovitsDir of ['', '   ', 'relative/project']) {

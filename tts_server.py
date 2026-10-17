@@ -78,7 +78,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="QQ Agent 本地 GPT-SoVITS 语音服务")
     parser.add_argument("--port", type=int, default=9881)
     parser.add_argument("--config", default=str(ROOT / 'voice.json'))
-    parser.add_argument("--device", choices=['cuda', 'cpu'], default='cuda')
+    parser.add_argument("--device", choices=['auto', 'cuda', 'cpu'], default='auto')
     args = parser.parse_args()
     # Surface the actual blocked import if a machine takes unusually long to load.
     faulthandler.dump_traceback_later(30, repeat=True)

@@ -85,7 +85,7 @@ def configure_runtime(repo: Path) -> None:
 class VoiceSynthesizer:
     """Load once; call synthesize(text, output) repeatedly from a chatbot."""
 
-    def __init__(self, config_path: Path = ROOT / "voice.json", device: str = "cuda"):
+    def __init__(self, config_path: Path = ROOT / "voice.json", device: str = "auto"):
         print("正在加载语音模型，请稍候……", flush=True)
         started = time.perf_counter()
         with backend_log():
@@ -94,6 +94,9 @@ class VoiceSynthesizer:
 
     def _load_model(self, config_path: Path, device: str):
         self.config = load_config(config_path)
+        device = self.config.get('device', 'cuda') if device == 'auto' else device
+        if device not in {'cuda', 'cpu'}:
+            raise ValueError('device 需要为 cuda 或 cpu。')
         configure_runtime(project_path(self.config["repo_dir"]))
         import torch
         from TTS_infer_pack.TTS import TTS, TTS_Config
@@ -107,7 +110,7 @@ class VoiceSynthesizer:
         )
 
         if device == "cuda" and not torch.cuda.is_available():
-            raise RuntimeError("未检测到可用 CUDA。请运行 setup.ps1，或使用 --device cpu。")
+            raise RuntimeError("未检测到可用 CUDA。请重新运行 setup.bat / bash setup.sh，或使用 --device cpu。")
         self.device = device
         torch.set_num_threads(min(8, os.cpu_count() or 1))
         repo = project_path(self.config["repo_dir"])
@@ -194,7 +197,7 @@ def main() -> int:
     parser.add_argument("--text", help="直接合成这段文字；省略则进入连续输入模式")
     parser.add_argument("--output", help="WAV 文件路径；交互模式下自动生成文件名")
     parser.add_argument("--config", default=str(ROOT / "voice.json"))
-    parser.add_argument("--device", choices=["cuda", "cpu"], default="cuda")
+    parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto", help="默认读取 voice.json 的 device")
     parser.add_argument("--speed", type=float)
     parser.add_argument("--play", action="store_true", help="生成后播放（Windows）")
     parser.add_argument("--check", action="store_true", help="检查资源和 CUDA，不加载模型")
@@ -204,10 +207,11 @@ def main() -> int:
     try:
         config_path = project_path(args.config)
         if args.check:
-            load_config(config_path)
+            config = load_config(config_path)
             import torch
             print(f"资源完整；PyTorch {torch.__version__}；CUDA 可用: {torch.cuda.is_available()}")
-            if args.device == "cuda" and not torch.cuda.is_available():
+            device = config.get('device', 'cuda') if args.device == 'auto' else args.device
+            if device == "cuda" and not torch.cuda.is_available():
                 raise RuntimeError("CUDA 不可用。")
             return 0
         synth = VoiceSynthesizer(config_path, args.device)

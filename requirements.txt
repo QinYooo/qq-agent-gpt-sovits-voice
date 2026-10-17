@@ -1,4 +1,4 @@
-# Minimal inference dependencies; tested versions are captured in requirements.lock.txt.
+# Minimal inference dependencies; setup installs the chosen PyTorch build separately.
 numpy==1.26.4
 scipy>=1.11,<1.16
 librosa==0.10.2

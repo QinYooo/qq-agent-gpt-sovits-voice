@@ -33,7 +33,7 @@ def main() -> None:
     import nltk
 
     if not (VENDOR / 'GPT_SoVITS').is_dir():
-        raise SystemExit('Run setup.ps1 to prepare the pinned upstream source first.')
+        raise SystemExit('Run setup.bat / bash setup.sh to prepare the pinned upstream source first.')
     for source in SOURCES:
         print(f"Downloading shared assets: {source['repo']}", flush=True)
         snapshot_download(source['repo'], revision=source['revision'],

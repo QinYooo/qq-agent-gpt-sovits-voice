@@ -1,6 +1,10 @@
 # Local configuration, credentials, conversation data
 voice.json
 voice.local.json
+installation.json
+*.installing
+.backups/
+*.tmp
 .env
 .env.*
 !.env.example

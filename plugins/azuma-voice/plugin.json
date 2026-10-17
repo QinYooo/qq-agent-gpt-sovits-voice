@@ -1,7 +1,7 @@
 {
   "id": "azuma-voice",
   "name": "冬雪莲语音回复",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "apiVersion": 1,
   "category": "media",
   "description": "复用本地 v2Pro 冬雪莲模型；/voice on 开启当前群或私聊的纯语音回复，/voice off 恢复文字，/voice 查看状态。",

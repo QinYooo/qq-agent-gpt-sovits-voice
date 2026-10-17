@@ -1,5 +1,6 @@
 {
   "name": "My v2Pro voice",
+  "device": "cuda",
   "repo_dir": "vendor/GPT-SoVITS",
   "gpt_weights": "models/voice/gpt.ckpt",
   "sovits_weights": "models/voice/sovits.pth",

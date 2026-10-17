@@ -8,13 +8,16 @@ ROOT = Path(__file__).resolve().parents[1]
 ALLOWED = {
     '.gitattributes', '.gitignore', '.github/workflows/ci.yml', 'LICENSE',
     'THIRD_PARTY_NOTICES.md', 'PRIVACY.md', 'README.md', 'package.json',
-    'voice.example.json', 'setup.ps1', 'prepare_assets.py', 'tts.py', 'tts_server.py',
+    'voice.example.json', 'setup.bat', 'setup.sh', 'prepare_assets.py', 'tts.py', 'tts_server.py',
     'requirements.txt', 'requirements.lock.txt', 'run_tts.bat',
-    'scripts/install-plugin.ps1', 'scripts/check_publication.py',
+    'scripts/check_publication.py', 'scripts/setup.py', 'scripts/download_voice.py',
+    'scripts/install_plugin.py', 'scripts/python.cmd', 'scripts/python.sh',
+    'install-plugin.bat', 'install-plugin.sh', 'run_tts.sh', 'docs/development.md',
     'plugins/azuma-voice/plugin.json', 'plugins/azuma-voice/index.js',
     'plugins/azuma-voice/engine.js', 'plugins/azuma-voice/worker.js',
     'plugins/azuma-voice/README.md', 'tests/voice.test.mjs',
-    'tests/worker.test.mjs', 'tests/test_tts_server.py',
+    'tests/worker.test.mjs', 'tests/test_tts_server.py', 'tests/test_installers.py',
+    'tests/installation.test.mjs', 'plugins/azuma-voice/installation.js',
 }
 PATTERNS = {
     'user profile path': re.compile(r'(?i)[a-z]:[\\/]Users[\\/][^\s"\']+'),

@@ -36,6 +36,10 @@ export function configuredDirectory(config) {
   return dir;
 }
 
+export function pythonPath(dir, platform = process.platform) {
+  return platform === 'win32' ? join(dir, '.venv', 'Scripts', 'python.exe') : join(dir, '.venv', 'bin', 'python');
+}
+
 export class LocalWorker {
   constructor({ config, dataDir, log = () => {}, warn = () => {} }) {
     this.config = config; this.dataDir = dataDir; this.log = log; this.warn = warn;
@@ -60,7 +64,7 @@ export class LocalWorker {
     }
     if (!this.config().autoStart) throw new Error('本地语音服务尚未启动');
     const dir = configuredDirectory(this.config());
-    const python = join(dir, '.venv', 'Scripts', 'python.exe');
+    const python = pythonPath(dir);
     const server = join(dir, 'tts_server.py');
     if (!existsSync(python) || !existsSync(server)) throw new Error('冬雪莲语音项目目录不完整');
     if (!this.child || this.child.exitCode !== null) {

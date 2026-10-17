@@ -1,13 +1,21 @@
 import { join } from 'node:path';
 import { SendQueue } from '../../src/sender.js';
 import { DATA_DIR, getConfig } from '../../src/config.js';
-import { command, VoiceReplies } from './engine.js?v=1.1.0';
-import { LocalWorker } from './worker.js?v=1.1.0';
+import { setSkillConfig } from '../../src/skills/config.js';
+import { fileURLToPath } from 'node:url';
+import { command, VoiceReplies } from './engine.js?v=1.2.0';
+import { LocalWorker } from './worker.js?v=1.2.0';
+import { applyInstallation } from './installation.js?v=1.2.0';
 
 let api, engine, worker, previousSend, wrappedSend;
 const seenCommands = new Map();
 
-export function setup(value) { api = value; }
+export function setup(value) {
+  api = value;
+  applyInstallation(fileURLToPath(new URL('./installation.json', import.meta.url)), {
+    storage: api.storage, setConfig: patch => setSkillConfig('azuma-voice', patch), log: api.log
+  });
+}
 
 export function available() {
   return typeof SendQueue.prototype.sendTextBatch === 'function' && typeof SendQueue.prototype.sendMedia === 'function'
